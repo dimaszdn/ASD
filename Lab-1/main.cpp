@@ -7,11 +7,11 @@ void getSequence(std::string& str)
     std::setlocale(LC_ALL, "RUS");
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
-    std::cout << "Введите строку: ";
+    std::cout << "Enter the bracket sequence: ";
     std::cin >> str;
 }
 
-bool checkSumBrackets(char a, char b) //сумма ( + ) = 81; { + } = 248; [ + ] = 184
+bool checkSumBrackets(char a, char b) //sum ( + ) = 81; { + } = 248; [ + ] = 184
 {
     if (a + b == 81 || a + b == 248 || a + b == 184)
         return true;
@@ -32,15 +32,15 @@ void checkRightSequence(std::string& str)
                 openBrackets.pop();
             else
             {
-                std::cout << "Строка не существует!" << "\n";
+                std::cout << "The string does not exist!" << "\n";
                 return;
             }
         }
     }
     if (openBrackets.empty())
-        std::cout << "Строка существует!" << "\n";
+        std::cout << "The string exist!" << "\n";
     else
-        std::cout << "Строка не существует!" << "\n";
+        std::cout << "The string does not exist!" << "\n";
 }
 
 int main()

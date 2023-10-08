@@ -16,6 +16,9 @@ namespace ch
 
         void comb_sort()
         {
+            if (m_vec.empty())
+                throw std::out_of_range("Empty container!");
+
             int dist = m_size;
             const double factor = 1.247;
             bool swapped = true;
@@ -41,7 +44,19 @@ namespace ch
 
         void insertion_sort()
         {
+            if (m_vec.empty())
+                throw std::out_of_range("Empty container!");
 
+            int j = 0;
+            for (int i = 1; i < m_size; ++i)
+            {
+                j = i - 1;
+                while (j >= 0 && m_vec[j] >= m_vec[j + 1])
+                {
+                    std::swap(m_vec[j], m_vec[j + 1]);
+                    --j;
+                }
+            }
         }
 
         void print_vec()

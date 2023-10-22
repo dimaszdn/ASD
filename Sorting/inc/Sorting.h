@@ -12,13 +12,14 @@ namespace ch
         int m_size{0};
 
     public:
-        Sort(std::vector<T>& vec) : m_vec(vec), m_size(vec.size()) {}
-
-        void comb_sort()
+        Sort(std::vector<T>& vec) : m_vec(vec), m_size(vec.size())
         {
             if (m_vec.empty())
                 throw std::out_of_range("Empty container!");
+        }
 
+        void comb_sort()
+        {
             int dist = m_size;
             const double factor = 1.247;
             bool swapped = true;
@@ -42,11 +43,8 @@ namespace ch
             }
         }
 
-        void insertion_sort()
+        void insertion_sort() //O(n^2) наихудший случай, когда элементы расположены по убыванию
         {
-            if (m_vec.empty())
-                throw std::out_of_range("Empty container!");
-
             int j = 0;
             for (int i = 1; i < m_size; ++i)
             {
@@ -57,6 +55,26 @@ namespace ch
                     --j;
                 }
             }
+        }
+
+        void selection_sort() //O(n^2)
+        {
+            int min_index;
+            for (int i = 0; i < m_size - 1; ++i)
+            {
+                min_index = i;
+                for (int j = i + 1; j < m_size; ++j)
+                {
+                    if (m_vec[j] < m_vec[min_index])
+                        min_index = j;
+                }
+                std::swap(m_vec[i], m_vec[min_index]);
+            }
+        }
+
+        void shell_sort()
+        {
+            
         }
 
         void print_vec()

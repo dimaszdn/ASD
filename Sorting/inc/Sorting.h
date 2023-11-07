@@ -4,6 +4,15 @@
 
 namespace ch
 {
+    std::vector<int> random_fill(int countEl, int begin, int end)
+    {
+        srand(time(0));
+        std::vector<int> random;
+        for (int i = 0; i < countEl; ++i)
+            random.push_back(begin + rand() % (end - begin + 1));
+        return random;
+    }
+
     template<typename T>
     class Sort
     {
@@ -43,7 +52,7 @@ namespace ch
             }
         }
 
-        void insertion_sort() //O(n^2) наихудший случай, когда элементы расположены по убыванию
+        void insertion_sort()
         {
             int j = 0;
             for (int i = 1; i < m_size; ++i)
@@ -57,7 +66,7 @@ namespace ch
             }
         }
 
-        void selection_sort() //O(n^2)
+        void selection_sort()
         {
             int min_index;
             for (int i = 0; i < m_size - 1; ++i)
@@ -87,19 +96,13 @@ namespace ch
                     tmp = m_vec[i];
                     for (j = i - dist; (j >= 0) && (m_vec[j] >= tmp); j = j - dist)
                     {
-//                        std::cout << "[" << dist << "]" << " ";
-//                        this->print_vec1(j + dist, j);
                         m_vec[j + dist] = m_vec[j];
                         m_vec[j] = tmp;
-//                        std::cout <<"After: ";
-//                        this->print_vec1(j + dist, j);
-//                        std::cout << "\n";
                     }
                 }
             }
         }
 
-        //**********************************
         void counting_sort(int exp)
         {
             const int maxDigit = 10;
@@ -132,8 +135,120 @@ namespace ch
             for (int exp = 1; max / exp > 0; exp = exp * 10)
                 this->counting_sort(exp);
         }
-        //***********************************
 
+        void merge_sort(int begin, int end)
+        {
+            if (end - begin < 2) //если один элемент
+                return;
+
+            if (end - begin == 2) //если пара
+            {
+                if (m_vec[begin] > m_vec[begin + 1])
+                    std::swap(m_vec[begin], m_vec[begin + 1]);
+                return;
+            }
+
+            int mid = (begin + end) / 2; //делим пополам
+            merge_sort(begin, mid);
+            merge_sort(mid, end);
+
+            //сливаем половины нужным образом
+            std::vector<int> output;
+            int b_part1 = begin;
+            int e_part1 = (begin + end) / 2;
+            int b_part2 = e_part1;
+            while (output.size() < end - begin)
+            {
+                if (b_part1 >= e_part1 || (b_part2 < end && m_vec[b_part1] > m_vec[b_part2]))
+                {
+                    output.push_back(m_vec[b_part2]);
+                    ++b_part2;
+                }
+                else
+                {
+                    output.push_back(m_vec[b_part1]);
+                    ++b_part1;
+                }
+            }
+
+            //перезаписываем
+            for (int i = begin; i < end; ++i)
+                m_vec[i] = output[i - begin];
+        }
+
+        void quick_sort(int begin, int end)
+        {
+            if (begin > end)
+                return;
+
+            int left = begin;
+            int right = end;
+            auto middle = m_vec[(begin + end) / 2];
+
+            while (left <= right)
+            {
+                while (m_vec[left] < middle)
+                    ++left;
+                while (m_vec[right] > middle)
+                    --right;
+                if (left <= right)
+                {
+                    std::swap(m_vec[left], m_vec[right]);
+                    ++left;
+                    --right;
+                }
+            }
+
+            quick_sort(begin, right);
+            quick_sort(left, end);
+        }
+
+        void heapify(int root, int size)
+        {
+            int max = root;
+            int lChild = 2 * root + 1;
+            int rChild = 2 * root + 2;
+
+            if (lChild < size && m_vec[lChild] >= m_vec[max])
+                max = lChild;
+
+            if (rChild < size && m_vec[rChild] >= m_vec[max])
+                max = rChild;
+
+            if (max != root)
+            {
+                std::swap(m_vec[root], m_vec[max]);
+                heapify(max, size); //рекурсивно вызываемся для поддерева
+            }
+        }
+
+        void heap_sort()
+        {
+            for (int i = (m_size / 2) - 1; i >= 0; --i)
+                heapify(i, m_size);
+
+            for (int i = m_size - 1; i >= 0; --i)
+            {
+                std::swap(m_vec[0], m_vec[i]);
+                heapify(0, i);
+            }
+        }
+
+        void print_vec()
+        {
+            for (int i = 0; i < m_vec.size(); ++i)
+            {
+                std::cout << m_vec[i] << " ";
+            }
+            std::cout << "\n";
+        }
+
+        int getSize()
+        {
+            return m_size;
+        }
+
+    private:
         void print_vec1(int x, int y)
         {
             for (int i = 0; i < m_vec.size(); ++i)
@@ -148,16 +263,6 @@ namespace ch
 //            std::cout << "\n";
         }
 
-        void print_vec()
-        {
-            for (int i = 0; i < m_vec.size(); ++i)
-            {
-                std::cout << m_vec[i] << " ";
-            }
-            std::cout << "\n";
-        }
-
-    private:
         T getMax()
         {
             T max = m_vec[0];

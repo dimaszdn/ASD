@@ -1,6 +1,7 @@
 #include<HashTable.h>
+
+#include <iostream>
 #include<vector>
-#include<iostream>
 
 int main()
 {

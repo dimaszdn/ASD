@@ -5,3 +5,5 @@ include_directories(inc/)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(HashTable_Open_addressing main.cpp inc/HashTable.h)
+
+file(COPY "files" DESTINATION "/")

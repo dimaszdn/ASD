@@ -107,22 +107,6 @@ namespace asd
             }
         }
 
-        void destroyTree()
-        {
-            destroySubTree(mRoot);
-            mRoot = nullptr;
-        }
-
-        void destroySubTree(Node* node)
-        {
-            if (node != nullptr)
-            {
-                destroySubTree(node->mLeft);
-                destroySubTree(node->mRight);
-                delete node;
-            }
-        }
-
         Node* getRoot()
         {
             return mRoot;
@@ -224,6 +208,22 @@ namespace asd
                     node->mRight = new Node(value);
                 else
                     this->insert(value, node->mRight);
+            }
+        }
+
+        void destroyTree()
+        {
+            destroySubTree(mRoot);
+            mRoot = nullptr;
+        }
+
+        void destroySubTree(Node* node)
+        {
+            if (node != nullptr)
+            {
+                destroySubTree(node->mLeft);
+                destroySubTree(node->mRight);
+                delete node;
             }
         }
 

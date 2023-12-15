@@ -188,7 +188,7 @@ namespace asd
                 if (parent != root)
                     parent->mLeft = child->mRight;
                 else
-                    parent->mRight = child->mLeft;
+                    parent->mRight = child->mRight;
 
                 root->mValue = child->mValue;
                 delete child;
